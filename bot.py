@@ -58,19 +58,26 @@ async def on_guild_channel_create(channel):
 
 @Devcord.Bot.event
 async def on_guild_channel_delete(channel):
-    if os.path.exists(channel.name):
+    try:
         shutil.rmtree(channel.name)
+    except:
+        pass
 
     
 @Devcord.Bot.event
 async def on_thread_create(thread):
+    if not os.path.exists(thread.channel.name):
+        return
     Devcord.CodeBlocks.append(await thread.send(Devcord.CodeBlock(Devcord.Settings.StartCode)))
     with open(f"{thread.channel.name}\\{thread.name}", "w") as f:
         f.write(Devcord.Settings.StartCode)
 
 @Devcord.Bot.event
 async def on_thread_delete(thread):
-    os.remove(f"{thread.channel.name}\\{thread.name}")
+    try:
+        os.remove(f"{thread.channel.name}\\{thread.name}")
+    except:
+        pass
 
 
 @Devcord.Bot.event
