@@ -58,6 +58,8 @@ async def on_guild_channel_create(channel):
 
 @Devcord.Bot.event
 async def on_guild_channel_delete(channel):
+    Devcord.CodeBlocks = [i for i in Devcord.CodeBlocks if i.channel.channel.id!=channel.id]
+    print("Codeblocks: ", len(Devcord.CodeBlocks))
     try:
         shutil.rmtree(channel.name)
     except:
@@ -67,13 +69,14 @@ async def on_guild_channel_delete(channel):
 @Devcord.Bot.event
 async def on_thread_create(thread):
     if not os.path.exists(thread.channel.name):
-        return
+        os.mkdir(thread.channel.name)
     Devcord.CodeBlocks.append(await thread.send(Devcord.CodeBlock(Devcord.Settings.StartCode)))
     with open(f"{thread.channel.name}\\{thread.name}", "w") as f:
         f.write(Devcord.Settings.StartCode)
 
 @Devcord.Bot.event
 async def on_thread_delete(thread):
+    Devcord.CodeBlocks = [i for i in Devcord.CodeBlocks if i.channel.id!=thread.id]
     try:
         os.remove(f"{thread.channel.name}\\{thread.name}")
     except:
@@ -81,7 +84,7 @@ async def on_thread_delete(thread):
 
 
 @Devcord.Bot.event
-async def on_message_edit(before, after):
+async def on_message_edit(_, after):
     if not after in Devcord.CodeBlocks:
         return
     with open(f"{after.channel.channel.name}\\{after.channel.name}", "w") as f:
@@ -89,7 +92,7 @@ async def on_message_edit(before, after):
 
 
 @Devcord.Bot.event
-async def on_reaction_add(reaction, user):
+async def on_reaction_add(reaction, _):
     if not reaction.message in Devcord.CodeBlocks:
         return
 
