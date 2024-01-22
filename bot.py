@@ -13,7 +13,7 @@ class Devcord:
     
     @staticmethod
     def CodeBlock(code, lang=True):
-        return f"```{'python' if lang else ''}\n{code}\n```"
+        return f"```{['', 'python'][lang]}\n{code}\n```"
     
     @staticmethod
     def ParseCode(code):
@@ -44,7 +44,7 @@ class Devcord:
             return output
         except:
             return "Invalid formatting in code"
-
+        
 
 @Devcord.Bot.event
 async def on_ready():
@@ -58,8 +58,7 @@ async def on_guild_channel_create(channel):
 
 @Devcord.Bot.event
 async def on_guild_channel_delete(channel):
-    Devcord.CodeBlocks = [i for i in Devcord.CodeBlocks if i.channel.channel.id!=channel.id]
-    print("Codeblocks: ", len(Devcord.CodeBlocks))
+    Devcord.CodeBlocks = [i for i in Devcord.CodeBlocks if i.channel.channel]
     try:
         shutil.rmtree(channel.name)
     except:
