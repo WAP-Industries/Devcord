@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import os, shutil, io, sys
+import os, shutil, subprocess
 
 class Devcord:
     Bot = commands.Bot(command_prefix="!", self_bot=True)
@@ -26,24 +26,14 @@ class Devcord:
         return '\n'.join(code[start:end]), start
 
     @staticmethod
-    def GetCodeResult(code):
+    def GetCodeResult(raw, file):
+        if not Devcord.ParseCode(raw)[1]:
+            return "Invalid formatting in code block"
         try:
-            code, passed = Devcord.ParseCode(code)
-            if not passed:
-                raise Exception()
-            
-            try:
-                output = io.StringIO()
-                sys.stdout = output
-                exec(code)
-                sys.stdout = sys.__stdout__
-                output = output.getvalue()
-            except Exception as e:
-                output = e 
-
-            return output
-        except:
-            return "Invalid formatting in code"
+            result = subprocess.run(["python", file], capture_output=1, text=1)
+        except subprocess.CalledProcessError as e:
+            result = e
+        return f"{result.stdout}{result.stderr}"
         
 
 @Devcord.Bot.event
@@ -105,8 +95,11 @@ async def on_reaction_add(reaction, _):
                 Devcord.Terminals.pop(i)
 
         Devcord.Terminals.append(await message.reply(
-            Devcord.CodeBlock(Devcord.GetCodeResult(message.content), False),
-            mention_author=True
+            Devcord.CodeBlock(
+                Devcord.GetCodeResult(message.content, f"{message.channel.channel.name}\\{message.channel.name}"), 
+                False
+            ),
+            mention_author=1
         ))
 
         await message.remove_reaction(reaction, Devcord.Bot.user)
