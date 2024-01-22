@@ -54,6 +54,11 @@ async def on_guild_channel_delete(channel):
     except:
         pass
 
+@Devcord.Bot.event
+async def on_guild_channel_update(before, after):
+    if before.name!=after.name:
+        os.rename(f"{before.name}\\", f"{after.name}\\")
+
     
 @Devcord.Bot.event
 async def on_thread_create(thread):
@@ -70,6 +75,11 @@ async def on_thread_delete(thread):
         os.remove(f"{thread.channel.name}\\{thread.name}")
     except:
         pass
+
+@Devcord.Bot.event
+async def on_thread_update(before, after):
+    if before.name!=after.name:
+        os.rename(f"{before.channel.name}\\{before.name}", f"{after.channel.name}\\{after.name}")
 
 
 @Devcord.Bot.event
