@@ -22,7 +22,6 @@ Devcord turns Discord into a code IDE for Python.
 - <b>Folders</b>
     - Creating a channel will create a folder in the root directory of the Devcord source code
 - <b>Files</b>
-    - Creating a thread in a channel will save a file into the folder bearing the channel's name
-    - This will automatically send a fenced code block into the thread
+    - Creating a thread in a channel will save a file into the folder bearing the channel's name, and will send a fenced markdown code block into the thread
     - You can write code in the code block - changes will be reflected back to the file
     - To run the file with Python, react to the code block with `⏯️`
