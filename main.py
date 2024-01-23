@@ -6,7 +6,6 @@ from bot import *
 
 def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
     load_dotenv()
     Devcord.Bot.run(os.environ.get("TOKEN"))
 

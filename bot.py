@@ -30,7 +30,7 @@ class Devcord:
         if not Devcord.ParseCode(raw)[1]:
             return "Invalid formatting in code block"
         try:
-            result = subprocess.run(["python", file], capture_output=1, text=1)
+            result = subprocess.run(["python", file], capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
             result = e
         return f"{result.stdout}{result.stderr}"
@@ -109,7 +109,7 @@ async def on_reaction_add(reaction, _):
                 Devcord.GetCodeResult(message.content, f"{message.channel.channel.name}\\{message.channel.name}"), 
                 False
             ),
-            mention_author=1
+            mention_author=True
         ))
 
         await message.remove_reaction(reaction, Devcord.Bot.user)
