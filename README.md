@@ -19,7 +19,7 @@ Devcord turns Discord into a code IDE for Python.
 ---
 
 ## Usage
-- Running
+- <b>Running</b>
     - Download and extract this repository
     - `cd` to the root directory of the extracted folder
     - Run `python main.py`
