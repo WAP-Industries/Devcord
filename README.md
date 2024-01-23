@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="devcord.png" width=300 height=300>
+    <img src="devcord.png" width=200 height=200>
 </p>
 
 ## Description
