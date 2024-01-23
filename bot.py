@@ -13,7 +13,7 @@ class Devcord:
     
     @staticmethod
     def CodeBlock(code, lang=True):
-        return f"```{['', 'python'][lang]}\n{code}\n```"
+        return f"```{['', 'python'][lang]}\n{code or ' '}\n```"
     
     @staticmethod
     def ParseCode(code):
@@ -64,7 +64,8 @@ async def on_guild_channel_update(before, after):
 async def on_thread_create(thread):
     if not os.path.exists(thread.channel.name):
         os.mkdir(thread.channel.name)
-    Devcord.CodeBlocks.append(await thread.send(Devcord.CodeBlock(Devcord.Settings.StartCode)))
+    message = await thread.send(Devcord.CodeBlock(Devcord.Settings.StartCode))
+    Devcord.CodeBlocks.append(message)
     with open(f"{thread.channel.name}\\{thread.name}", "w") as f:
         f.write(Devcord.Settings.StartCode)
 
